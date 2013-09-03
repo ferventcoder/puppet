@@ -63,6 +63,12 @@ task :default do
   sh %{rake -T}
 end
 
+task :doc do
+  sh %{yardoc app/**/*.rb lib/**/*.rb --protected --private --embed-mixins --output-dir doc/yard/}
+  require 'doc_to_dash'
+  DocToDash::DocsetGenerator.new(:doc_input_path => 'doc/yard', :docset_name => 'PuppetTest').run
+end
+
 task :spec do
   sh %{rspec -fd spec}
 end
