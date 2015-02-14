@@ -63,7 +63,7 @@ OUTPUT
 
   it "should enable only the selected service" do
     Puppet::FileSystem.stubs(:exist?).with('/etc/rc.conf').returns(true)
-    File.stubs(:read).with('/etc/rc.conf').returns("openntpd_enable=\"NO\"\nntpd_enable=\"NO\"\n")
+    Puppet::FileSystem.stubs(:read).with('/etc/rc.conf').returns("openntpd_enable=\"NO\"\nntpd_enable=\"NO\"\n")
     fh = stub 'fh'
     File.stubs(:open).with('/etc/rc.conf', File::WRONLY).yields(fh)
     fh.expects(:<<).with("openntpd_enable=\"NO\"\nntpd_enable=\"YES\"\n")

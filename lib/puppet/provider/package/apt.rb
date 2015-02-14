@@ -1,3 +1,5 @@
+require 'puppet/file_system'
+
 Puppet::Type.type(:package).provide :apt, :parent => :dpkg, :source => :dpkg do
   # Provide sorting functionality
   include Puppet::Util::Package
@@ -28,7 +30,7 @@ Puppet::Type.type(:package).provide :apt, :parent => :dpkg, :source => :dpkg do
 
   def checkforcdrom
     have_cdrom = begin
-                   !!(File.read("/etc/apt/sources.list") =~ /^[^#]*cdrom:/)
+                   !!(Puppet::FileSystem.read("/etc/apt/sources.list") =~ /^[^#]*cdrom:/)
                  rescue
                    # This is basically pathological...
                    false

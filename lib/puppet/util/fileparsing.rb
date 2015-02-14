@@ -14,7 +14,7 @@
 # You would use it like this:
 #
 #   parser = Parser.new
-#   lines = parser.parse(File.read("/etc/passwd"))
+#   lines = parser.parse(Puppet::FileSystem.read("/etc/passwd"))
 #
 #   lines.each do |type, hash| # type will always be :user, since we only have one
 #       p hash

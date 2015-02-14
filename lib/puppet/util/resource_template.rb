@@ -1,5 +1,6 @@
 require 'puppet/util'
 require 'puppet/util/logging'
+require 'puppet/file_system'
 require 'erb'
 
 # A template wrapper that evaluates a template in the
@@ -40,7 +41,7 @@ class Puppet::Util::ResourceTemplate
 
   def evaluate
     set_resource_variables
-    ERB.new(File.read(@file), 0, "-").result(binding)
+    ERB.new(Puppet::FileSystem.read(@file), 0, "-").result(binding)
   end
 
   def initialize(file, resource)

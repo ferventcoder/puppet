@@ -4,6 +4,7 @@
 require 'puppet/util/selinux'
 require 'tempfile'
 require 'fileutils'
+require 'puppet/file_system'
 
 class Puppet::Util::FileType
   attr_accessor :loaded, :path, :synced
@@ -105,7 +106,7 @@ class Puppet::Util::FileType
     # Read the file.
     def read
       if Puppet::FileSystem.exist?(@path)
-        File.read(@path)
+        Puppet::FileSystem.read(@path)
       else
         return nil
       end

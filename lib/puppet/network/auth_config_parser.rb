@@ -1,10 +1,11 @@
 require 'puppet/network/rights'
+require 'puppet/file_system'
 
 module Puppet::Network
 class AuthConfigParser
 
   def self.new_from_file(file)
-    self.new(File.read(file))
+    self.new(Puppet::FileSystem.read(file))
   end
 
   def initialize(string)

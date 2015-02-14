@@ -1,5 +1,7 @@
 require 'puppet/ssl'
 require 'openssl'
+require 'puppet/file_system'
+
 module Puppet
 module SSL
   # Puppet::SSL::Configuration is intended to separate out the following concerns:
@@ -50,7 +52,7 @@ class Configuration
 
   # read_file makes testing easier.
   def read_file(path)
-    File.read(path)
+    Puppet::FileSystem.read(path)
   end
   private :read_file
 end

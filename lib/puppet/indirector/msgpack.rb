@@ -1,5 +1,6 @@
 require 'puppet/indirector/terminus'
 require 'puppet/util'
+require 'puppet/file_system'
 
 # The base class for MessagePack indirection terminus implementations.
 #
@@ -58,7 +59,7 @@ class Puppet::Indirector::Msgpack < Puppet::Indirector::Terminus
     msgpack = nil
 
     begin
-      msgpack = File.read(file)
+      msgpack = Puppet::FileSystem.read(file)
     rescue Errno::ENOENT
       return nil
     rescue => detail

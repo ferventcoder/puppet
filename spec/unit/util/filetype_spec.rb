@@ -17,7 +17,7 @@ describe Puppet::Util::FileType do
     describe "when the file already exists" do
       it "should return the file's contents when asked to read it" do
         Puppet::FileSystem.expects(:exist?).with(path).returns true
-        File.expects(:read).with(path).returns "my text"
+        Puppet::FileSystem.expects(:read).with(path).returns "my text"
 
         expect(file.read).to eq("my text")
       end

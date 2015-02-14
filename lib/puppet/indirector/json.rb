@@ -1,5 +1,6 @@
 require 'puppet/indirector/terminus'
 require 'puppet/util'
+require 'puppet/file_system'
 
 # The base class for JSON indirection terminus implementations.
 #
@@ -52,7 +53,7 @@ class Puppet::Indirector::JSON < Puppet::Indirector::Terminus
     json = nil
 
     begin
-      json = File.read(file)
+      json = Puppet::FileSystem.read(file)
     rescue Errno::ENOENT
       return nil
     rescue => detail

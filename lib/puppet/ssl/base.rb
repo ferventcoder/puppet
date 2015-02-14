@@ -2,6 +2,7 @@ require 'openssl'
 require 'puppet/ssl'
 require 'puppet/ssl/digest'
 require 'puppet/util/ssl'
+require 'puppet/file_system'
 
 # The base class for wrapping SSL instances.
 class Puppet::SSL::Base
@@ -81,7 +82,7 @@ class Puppet::SSL::Base
 
   # Read content from disk appropriately.
   def read(path)
-    @content = wrapped_class.new(File.read(path))
+    @content = wrapped_class.new(Puppet::FileSystem.read(path))
   end
 
   # Convert our thing to pem.

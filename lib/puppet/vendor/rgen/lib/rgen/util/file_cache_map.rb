@@ -1,5 +1,6 @@
 require 'digest'
 require 'fileutils'
+require 'puppet/file_system'
 
 module RGen
 
@@ -17,7 +18,7 @@ class FileCacheMap
   attr_accessor :version_info
 
   # +cache_dir+ is the name of the subfolder where cache files are created
-  # +postfix+ is an extension appended to the original file name for 
+  # +postfix+ is an extension appended to the original file name for
   # creating the name of the cache file
   def initialize(cache_dir, postfix)
     @postfix = postfix
@@ -56,10 +57,10 @@ class FileCacheMap
           reasons << :cachefile_corrupted
           result = :invalid
         end
-      end 
+      end
     rescue Errno::ENOENT
       reasons << :no_cachefile
-      result = :invalid 
+      result = :invalid
     end
     result
   end
@@ -72,7 +73,7 @@ class FileCacheMap
     FileUtils.mkdir(File.dirname(cf)) rescue Errno::EEXIST
     File.open(cf, "wb") do |f|
       f.write(data)
-    end 
+    end
   end
 
   # remove cache files which are not associated with any file in +key_paths+
@@ -80,16 +81,16 @@ class FileCacheMap
   def clean_unused(root_path, key_paths)
     raise "key paths must be within root path" unless key_paths.all?{|p| p.index(root_path) == 0}
     used_files = key_paths.collect{|p| cache_file(p)}
-    files = Dir[root_path+"/**/"+@cache_dir+"/*"+@postfix] 
+    files = Dir[root_path+"/**/"+@cache_dir+"/*"+@postfix]
     files.each do |f|
       FileUtils.rm(f) unless used_files.include?(f)
     end
   end
 
 private
-  
+
   def cache_file(path)
-    File.dirname(path) + "/"+@cache_dir+"/" + File.basename(path) + @postfix 
+    File.dirname(path) + "/"+@cache_dir+"/" + File.basename(path) + @postfix
   end
 
   def calc_sha1(data)
@@ -99,7 +100,7 @@ private
   end
 
   def keyData(path)
-    File.read(path)+@version_info.to_s
+    Puppet::FileSystem.read(path)+@version_info.to_s
   end
 
   # this method is much faster than calling +keyData+ and putting the result in +calc_sha1+
@@ -114,7 +115,7 @@ private
       "<missing_key_file>"
     end
   end
-   
+
 end
 
 end

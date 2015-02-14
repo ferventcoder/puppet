@@ -47,6 +47,14 @@ class Puppet::FileSystem::Windows < Puppet::FileSystem::Posix
     Puppet::Util::Windows::File.symlink?(path)
   end
 
+  def read(path)
+    contents = path.read(:encoding => Encoding::UTF_8)
+    contents = path.read(:encoding => Encoding::default_external) unless contents.valid_encoding?
+    contents = path.read unless contents.valid_encoding?
+
+    contents
+  end
+
   def readlink(path)
     raise_if_symlinks_unsupported
     Puppet::Util::Windows::File.readlink(path)

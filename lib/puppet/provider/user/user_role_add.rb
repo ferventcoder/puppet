@@ -1,6 +1,7 @@
 require 'puppet/util'
 require 'puppet/util/user_attr'
 require 'date'
+require 'puppet/file_system'
 
 Puppet::Type.type(:user).provide :user_role_add, :parent => :useradd, :source => :useradd do
 
@@ -187,7 +188,7 @@ Puppet::Type.type(:user).provide :user_role_add, :parent => :useradd, :source =>
   # concurrent `vipw -s` session will have no idea we risk data loss.
   def password=(cryptopw)
     begin
-      shadow = File.read(target_file_path)
+      shadow = Puppet::FileSystem.read(target_file_path)
 
       # Go Mifune loves the race here where we can lose data because
       # /etc/shadow changed between reading it and writing it.

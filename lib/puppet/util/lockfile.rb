@@ -1,3 +1,5 @@
+require 'puppet/file_system'
+
 # This class provides a simple API for managing a lock file
 # whose contents are an (optional) String.  In addition
 # to querying the basic state (#locked?) of the lock, managing
@@ -51,7 +53,7 @@ class Puppet::Util::Lockfile
   #  was locked.
   # @return [String] the data object.
   def lock_data
-    return File.read(@file_path) if file_locked?
+    return Puppet::FileSystem.read(@file_path) if file_locked?
   end
 
   # Private, internal utility method for encapsulating the logic about

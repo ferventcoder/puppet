@@ -82,7 +82,8 @@ describe "the template function" do
   end
 
   def eval_template(content)
-    File.stubs(:read).with("template").returns(content)
+    Puppet::FileSystem.stubs(:read).with("template").returns(content)
+    Puppet::FileSystem.stubs(:read).with(regexp_matches(/environment\.conf/)).returns('')
     Puppet::Parser::Files.stubs(:find_template).returns("template")
     scope.function_template(['template'])
   end

@@ -1,3 +1,5 @@
+require 'puppet/file_system'
+
 Puppet::Type.type(:service).provide :freebsd, :parent => :init do
 
   desc "Provider for FreeBSD and DragonFly BSD. Uses the `rcvar` argument of init scripts and parses/edits rc files."
@@ -72,7 +74,7 @@ Puppet::Type.type(:service).provide :freebsd, :parent => :init do
     # Replace in all files, not just in the first found with a match
     [rcconf, rcconf_local, rcconf_dir + "/#{service}"].each do |filename|
       if Puppet::FileSystem.exist?(filename)
-        s = File.read(filename)
+        s = Puppet::FileSystem.read(filename)
         if s.gsub!(/^(#{rcvar}(_enable)?)=\"?(YES|NO)\"?/, "\\1=\"#{yesno}\"")
           File.open(filename, File::WRONLY) { |f| f << s }
           self.debug("Replaced in #{filename}")

@@ -1,5 +1,6 @@
 require 'puppet/face'
 require 'puppet/parser'
+require 'puppet/file_system'
 
 Puppet::Face.define(:parser, '0.0.1') do
   copyright "Puppet Labs", 2014
@@ -107,7 +108,7 @@ Puppet::Face.define(:parser, '0.0.1') do
         missing_files = files - available_files
 
         dumps = available_files.collect do |file|
-          dump_parse(File.read(file), file, options)
+          dump_parse(Puppet::FileSystem.read(file), file, options)
         end.join("")
 
         if missing_files.empty?
